@@ -1,0 +1,30 @@
+# Secrets
+.env
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+.mypy_cache/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Runtime data
+data/pdfs/
+data/chroma_db/
+data/bm25_index.pkl
+data/corpus_metadata.json
+data/episodic_memory.jsonl
+data/semantic_memory.db
+
+# Trace output
+traces/*.jsonl
+
+# OS artifacts
+.DS_Store
+Thumbs.db
