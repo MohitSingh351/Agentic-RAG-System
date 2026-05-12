@@ -1,0 +1,92 @@
+[
+  {
+    "id": "q01",
+    "question": "What are the main innovations in recent transformer architectures for NLP?",
+    "expected_action": "RETRIEVE",
+    "expected_topics": ["transformer", "attention", "architecture"],
+    "should_refuse": false,
+    "should_clarify": false,
+    "notes": "Core RETRIEVE — broad transformer architecture question"
+  },
+  {
+    "id": "q02",
+    "question": "How do diffusion models generate images from noise?",
+    "expected_action": "RETRIEVE",
+    "expected_topics": ["diffusion", "noise", "generation"],
+    "should_refuse": false,
+    "should_clarify": false,
+    "notes": "Core RETRIEVE — diffusion model mechanics"
+  },
+  {
+    "id": "q03",
+    "question": "What papers on reinforcement learning from human feedback were published in the last 7 days?",
+    "expected_action": "USE_TOOL",
+    "expected_topics": ["reinforcement", "human feedback", "RLHF"],
+    "should_refuse": false,
+    "should_clarify": false,
+    "notes": "USE_TOOL — time-sensitive arXiv query"
+  },
+  {
+    "id": "q04",
+    "question": "Tell me about transformers.",
+    "expected_action": "CLARIFY",
+    "expected_topics": [],
+    "should_refuse": false,
+    "should_clarify": true,
+    "notes": "CLARIFY — ambiguous, could mean NLP or electrical"
+  },
+  {
+    "id": "q05",
+    "question": "What is the best chocolate cake recipe?",
+    "expected_action": "REFUSE",
+    "expected_topics": [],
+    "should_refuse": true,
+    "should_clarify": false,
+    "notes": "REFUSE — outside cs.AI domain"
+  },
+  {
+    "id": "q06",
+    "question": "How does the attention mechanism work in transformer models?",
+    "expected_action": "RETRIEVE",
+    "expected_topics": ["attention", "transformer", "query", "key", "value"],
+    "should_refuse": false,
+    "should_clarify": false,
+    "notes": "RETRIEVE — attention mechanism deep dive"
+  },
+  {
+    "id": "q07",
+    "question": "What evaluation metrics are used to benchmark large language models?",
+    "expected_action": "RETRIEVE",
+    "expected_topics": ["evaluation", "benchmark", "metric"],
+    "should_refuse": false,
+    "should_clarify": false,
+    "notes": "RETRIEVE — LLM evaluation metrics"
+  },
+  {
+    "id": "q08",
+    "question": "How do graph neural networks learn from structured data?",
+    "expected_action": "RETRIEVE",
+    "expected_topics": ["graph", "neural network", "structured"],
+    "should_refuse": false,
+    "should_clarify": false,
+    "notes": "RETRIEVE — GNN learning mechanisms"
+  },
+  {
+    "id": "q09",
+    "question": "Can you predict tomorrow's stock price for Tesla?",
+    "expected_action": "REFUSE",
+    "expected_topics": [],
+    "should_refuse": true,
+    "should_clarify": false,
+    "notes": "REFUSE — finance prediction, outside domain"
+  },
+  {
+    "id": "q10",
+    "question": "What are recent advances in few-shot learning for NLP tasks?",
+    "expected_action": "RETRIEVE",
+    "expected_topics": ["few-shot", "learning", "NLP"],
+    "should_refuse": false,
+    "should_clarify": false,
+    "notes": "RETRIEVE — few-shot learning for NLP"
+  }
+]
