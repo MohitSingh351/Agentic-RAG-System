@@ -44,13 +44,13 @@ def _make_result(chunk_id: str, text: str, score: float) -> dict:
 
 def _make_llm(pass1_text: str, pass2_json: str | None = None) -> MagicMock:
     client = MagicMock()
-    responses = [MagicMock(content=[MagicMock(text=pass1_text)])]
+    responses = [MagicMock(choices=[MagicMock(message=MagicMock(content=pass1_text))])]
     if pass2_json is not None:
-        responses.append(MagicMock(content=[MagicMock(text=pass2_json)]))
+        responses.append(MagicMock(choices=[MagicMock(message=MagicMock(content=pass2_json))]))
     else:
         no_contradiction = json.dumps({"contradictions": [], "revised_answer": pass1_text})
-        responses.append(MagicMock(content=[MagicMock(text=no_contradiction)]))
-    client.messages.create.side_effect = responses
+        responses.append(MagicMock(choices=[MagicMock(message=MagicMock(content=no_contradiction))]))
+    client.chat.completions.create.side_effect = responses
     return client
 
 
@@ -109,7 +109,7 @@ def test_uses_tool_result_when_no_retrieval():
     out = generate_answer(state, llm)
     assert isinstance(out["answer"], str)
     # Ensure LLM was called (not early-returned)
-    llm.messages.create.assert_called()
+    llm.chat.completions.create.assert_called()
 
 
 def test_empty_retrieval_and_tool():

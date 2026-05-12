@@ -5,7 +5,7 @@ import os
 import uuid
 from datetime import datetime, timezone
 
-import anthropic
+from openai import OpenAI
 from dotenv import load_dotenv
 from langgraph.graph import END, StateGraph
 
@@ -25,14 +25,19 @@ from retrieval.rerank import rerank
 load_dotenv()
 logger = logging.getLogger(__name__)
 
+_MISTRAL_BASE_URL = "https://api.mistral.ai/v1"
+
 _conv_memory = ConversationalMemory(max_turns=6)
-_llm_client: anthropic.Anthropic | None = None
+_llm_client: OpenAI | None = None
 
 
-def _get_llm() -> anthropic.Anthropic:
+def _get_llm() -> OpenAI:
     global _llm_client
     if _llm_client is None:
-        _llm_client = anthropic.Anthropic()
+        _llm_client = OpenAI(
+            api_key=os.getenv("MISTRAL_API_KEY"),
+            base_url=_MISTRAL_BASE_URL,
+        )
     return _llm_client
 
 

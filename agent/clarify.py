@@ -29,12 +29,12 @@ def generate_clarification(state: AgentState, llm_client) -> str:
     query = state.get("rewritten_query") or state.get("query", "")
 
     try:
-        response = llm_client.messages.create(
-            model="claude-haiku-4-5-20251001",
+        response = llm_client.chat.completions.create(
+            model="mistral-small-latest",
             max_tokens=80,
             messages=[{"role": "user", "content": _CLARIFY_PROMPT.format(query=query)}],
         )
-        raw = response.content[0].text.strip()
+        raw = response.choices[0].message.content.strip()
     except Exception as exc:
         logger.warning("Clarification LLM call failed: %s", exc)
         raw = _FALLBACK

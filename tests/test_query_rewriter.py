@@ -34,8 +34,8 @@ def _make_state(
 
 def _make_llm(response: str = "rewritten query") -> MagicMock:
     client = MagicMock()
-    client.messages.create.return_value = MagicMock(
-        content=[MagicMock(text=response)]
+    client.chat.completions.create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content=response))]
     )
     return client
 
@@ -44,7 +44,7 @@ def test_rewrite_with_context():
     llm = _make_llm("What is the attention mechanism in transformers?")
     state = _make_state(query="What about it?", context="User: Tell me about transformers.\nAssistant: ...")
     result = rewrite_query(state, llm)
-    llm.messages.create.assert_called()
+    llm.chat.completions.create.assert_called()
     assert isinstance(result, str)
     assert len(result) > 0
 
@@ -79,10 +79,10 @@ def test_rewrite_retries_on_llm_failure():
         call_count[0] += 1
         if call_count[0] < 2:
             raise Exception("transient error")
-        return MagicMock(content=[MagicMock(text="retry success")])
+        return MagicMock(choices=[MagicMock(message=MagicMock(content="retry success"))])
 
     llm = MagicMock()
-    llm.messages.create.side_effect = flaky_create
+    llm.chat.completions.create.side_effect = flaky_create
     state = _make_state(query="What is RAG?", context="", action="RETRIEVE")
     # Should succeed on retry (tenacity retries up to 2 times)
     result = rewrite_query(state, llm)

@@ -1,4 +1,4 @@
-"""Embed chunks with OpenAI, upsert to ChromaDB, and serialize BM25 index."""
+"""Embed chunks with Mistral, upsert to ChromaDB, and serialize BM25 index."""
 
 import json
 import logging
@@ -9,7 +9,7 @@ from typing import Any
 
 import chromadb
 from dotenv import load_dotenv
-from openai import APIError, OpenAI
+from openai import OpenAI
 from rank_bm25 import BM25Okapi
 from tenacity import retry, stop_after_attempt, wait_exponential
 from tqdm import tqdm
@@ -22,12 +22,13 @@ BM25_INDEX_PATH = os.getenv("BM25_INDEX_PATH", "./data/bm25_index.pkl")
 CORPUS_METADATA_PATH = os.getenv("CORPUS_METADATA_PATH", "./data/corpus_metadata.json")
 COLLECTION_NAME = "arxiv_papers"
 EMBED_BATCH_SIZE = 100
+_MISTRAL_BASE_URL = "https://api.mistral.ai/v1"
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=10))
 def _embed_batch(client: OpenAI, texts: list[str]) -> list[list[float]]:
-    """Embed a batch of texts with OpenAI text-embedding-3-small."""
-    response = client.embeddings.create(model="text-embedding-3-small", input=texts)
+    """Embed a batch of texts with Mistral mistral-embed."""
+    response = client.embeddings.create(model="mistral-embed", input=texts)
     return [item.embedding for item in response.data]
 
 
@@ -50,7 +51,10 @@ def embed_and_store(chunks: list[dict[str, Any]]) -> None:
         logger.info("No chunks to embed.")
         return
 
-    openai_client = OpenAI()
+    openai_client = OpenAI(
+        api_key=os.getenv("MISTRAL_API_KEY"),
+        base_url=_MISTRAL_BASE_URL,
+    )
     collection = get_chroma_collection()
 
     # Embed and upsert in batches

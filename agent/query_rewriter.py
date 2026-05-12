@@ -31,12 +31,12 @@ def _is_question(query: str) -> bool:
 
 @retry(stop=stop_after_attempt(2), wait=wait_fixed(1))
 def _llm_call(llm_client, prompt: str, max_tokens: int) -> str:
-    response = llm_client.messages.create(
-        model="claude-haiku-4-5-20251001",
+    response = llm_client.chat.completions.create(
+        model="mistral-small-latest",
         max_tokens=max_tokens,
         messages=[{"role": "user", "content": prompt}],
     )
-    return response.content[0].text.strip()
+    return response.choices[0].message.content.strip()
 
 
 def rewrite_query(state: AgentState, llm_client) -> str:

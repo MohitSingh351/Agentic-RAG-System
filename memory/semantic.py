@@ -106,19 +106,19 @@ def extract_and_store(user_message: str, llm_client) -> None:
 
     Args:
         user_message: The latest user message.
-        llm_client: An Anthropic client with a .messages.create() method.
+        llm_client: An OpenAI-compatible client (Mistral) with a .chat.completions.create() method.
     """
     if not user_message.strip():
         return
 
     prompt = _EXTRACT_PROMPT.format(message=user_message)
     try:
-        response = llm_client.messages.create(
-            model="claude-haiku-4-5-20251001",
+        response = llm_client.chat.completions.create(
+            model="mistral-small-latest",
             max_tokens=300,
             messages=[{"role": "user", "content": prompt}],
         )
-        raw = response.content[0].text.strip()
+        raw = response.choices[0].message.content.strip()
     except Exception as exc:
         logger.warning("LLM extraction failed: %s", exc)
         return

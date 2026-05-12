@@ -29,8 +29,8 @@ def _make_retrieval_results(n: int = 3, score: float = 0.8) -> list[dict]:
 
 def _make_llm(responses: list[str]) -> MagicMock:
     client = MagicMock()
-    client.messages.create.side_effect = [
-        MagicMock(content=[MagicMock(text=r)]) for r in responses
+    client.chat.completions.create.side_effect = [
+        MagicMock(choices=[MagicMock(message=MagicMock(content=r))]) for r in responses
     ]
     return client
 

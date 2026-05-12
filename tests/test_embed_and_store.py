@@ -138,8 +138,8 @@ def test_embed_retries_on_api_error(mock_collection, mock_openai_cls, tmp_path, 
     def flaky_create(**kwargs):
         call_count[0] += 1
         if call_count[0] < 3:
-            raise APIError("rate limit", request=MagicMock(), body=None)
-        return MagicMock(data=[MagicMock(embedding=[0.1] * 1536) for _ in range(5)])
+            raise Exception("rate limit")
+        return MagicMock(data=[MagicMock(embedding=[0.1] * 1024) for _ in range(5)])
 
     mock_embed = MagicMock()
     mock_embed.embeddings.create.side_effect = flaky_create

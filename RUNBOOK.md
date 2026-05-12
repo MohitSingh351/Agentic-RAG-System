@@ -22,9 +22,9 @@ pyenv install 3.12.10
 pyenv local 3.12.10
 ```
 
-### 2. API keys
+### 2. API key
 
-You need two API keys. Copy the example file and fill them in:
+You need **one** API key — Mistral. Copy the example file and fill it in:
 
 ```bash
 cp .env.example .env
@@ -33,11 +33,10 @@ cp .env.example .env
 Open `.env` and set:
 
 ```
-ANTHROPIC_API_KEY=sk-ant-...      # from console.anthropic.com
-OPENAI_API_KEY=sk-...             # from platform.openai.com (for embeddings only)
+MISTRAL_API_KEY=...      # from console.mistral.ai → API Keys
 ```
 
-The app uses Claude Haiku for the agent (routing, answering, clarifying) and OpenAI `text-embedding-3-small` for dense retrieval embeddings.
+Mistral is used for everything: chat completions (routing, answering, query rewriting, clarification) and embeddings (`mistral-embed`). The app uses `mistral-small-latest` as the chat model.
 
 ---
 

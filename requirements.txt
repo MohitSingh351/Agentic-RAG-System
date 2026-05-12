@@ -1,5 +1,4 @@
-# LLM + Embeddings
-anthropic==0.40.0
+# LLM + Embeddings (Mistral via OpenAI-compatible SDK)
 openai==1.54.0
 
 # Agent Framework

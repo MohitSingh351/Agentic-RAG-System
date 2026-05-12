@@ -29,7 +29,7 @@ def _mock_embed(embedding: list[float] | None = None):
 
 
 @patch("retrieval.dense._get_collection")
-@patch("retrieval.dense._get_openai")
+@patch("retrieval.dense._get_mistral")
 def test_dense_retrieve_returns_list(mock_openai, mock_col):
     mock_openai.return_value = _mock_embed()
     mock_col.return_value = _mock_collection(
@@ -48,7 +48,7 @@ def test_dense_retrieve_returns_list(mock_openai, mock_col):
 
 
 @patch("retrieval.dense._get_collection")
-@patch("retrieval.dense._get_openai")
+@patch("retrieval.dense._get_mistral")
 def test_dense_score_range(mock_openai, mock_col):
     mock_openai.return_value = _mock_embed()
     mock_col.return_value = _mock_collection(
@@ -63,7 +63,7 @@ def test_dense_score_range(mock_openai, mock_col):
 
 
 @patch("retrieval.dense._get_collection")
-@patch("retrieval.dense._get_openai")
+@patch("retrieval.dense._get_mistral")
 def test_dense_sorted_by_score(mock_openai, mock_col):
     mock_openai.return_value = _mock_embed()
     mock_col.return_value = _mock_collection(
@@ -78,7 +78,7 @@ def test_dense_sorted_by_score(mock_openai, mock_col):
 
 
 @patch("retrieval.dense._get_collection")
-@patch("retrieval.dense._get_openai")
+@patch("retrieval.dense._get_mistral")
 def test_dense_empty_collection(mock_openai, mock_col):
     mock_openai.return_value = _mock_embed()
     empty_col = MagicMock()
@@ -91,7 +91,7 @@ def test_dense_empty_collection(mock_openai, mock_col):
 
 
 @patch("retrieval.dense._get_collection")
-@patch("retrieval.dense._get_openai")
+@patch("retrieval.dense._get_mistral")
 def test_dense_top_k_respected(mock_openai, mock_col):
     mock_openai.return_value = _mock_embed()
     mock_col.return_value = _mock_collection(
@@ -105,7 +105,7 @@ def test_dense_top_k_respected(mock_openai, mock_col):
 
 
 @patch("retrieval.dense._get_collection")
-@patch("retrieval.dense._get_openai")
+@patch("retrieval.dense._get_mistral")
 def test_dense_empty_query(mock_openai, mock_col):
     mock_openai.return_value = _mock_embed()
     mock_col.return_value = _mock_collection(

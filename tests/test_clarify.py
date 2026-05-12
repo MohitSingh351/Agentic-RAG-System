@@ -21,7 +21,9 @@ def _make_state(query: str = "Tell me about transformers.") -> AgentState:
 
 def _make_llm(response: str) -> MagicMock:
     client = MagicMock()
-    client.messages.create.return_value = MagicMock(content=[MagicMock(text=response)])
+    client.chat.completions.create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content=response))]
+    )
     return client
 
 
@@ -45,7 +47,7 @@ def test_clarify_appends_question_mark():
 
 def test_clarify_fallback_on_error():
     llm = MagicMock()
-    llm.messages.create.side_effect = Exception("LLM down")
+    llm.chat.completions.create.side_effect = Exception("LLM down")
     result = generate_clarification(_make_state(), llm)
     assert result == _FALLBACK
 

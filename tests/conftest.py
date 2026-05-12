@@ -14,10 +14,10 @@ from agent.state import AgentState
 
 @pytest.fixture
 def mock_llm_client() -> MagicMock:
-    """MagicMock Anthropic client with a default single response."""
+    """MagicMock Mistral (OpenAI-compatible) client with a default single response."""
     client = MagicMock()
-    client.messages.create.return_value = MagicMock(
-        content=[MagicMock(text="Default mock response.")]
+    client.chat.completions.create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content="Default mock response."))]
     )
     return client
 

@@ -22,8 +22,8 @@ def _patch_db(monkeypatch, tmp_path):
 
 def _make_llm(json_response: str) -> MagicMock:
     client = MagicMock()
-    client.messages.create.return_value = MagicMock(
-        content=[MagicMock(text=json_response)]
+    client.chat.completions.create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content=json_response))]
     )
     return client
 

@@ -34,8 +34,8 @@ def _make_state(
 
 def _make_llm(response: str) -> MagicMock:
     client = MagicMock()
-    client.messages.create.return_value = MagicMock(
-        content=[MagicMock(text=response)]
+    client.chat.completions.create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content=response))]
     )
     return client
 
@@ -74,7 +74,7 @@ def test_route_with_similar_episodes_biases_answer():
     state = _make_state(similar_episodes=episodes)
     route_query(state, llm)
     # Verify the prompt included mention of the similar episode
-    call_args = llm.messages.create.call_args
+    call_args = llm.chat.completions.create.call_args
     user_message = call_args.kwargs.get("messages", [{}])[-1].get("content", "")
     assert "similar question" in user_message or "ANSWER" in user_message
 

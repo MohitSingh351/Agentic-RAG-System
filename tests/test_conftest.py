@@ -28,12 +28,12 @@ def test_sample_state_has_all_fields(sample_state):
 
 
 def test_mock_llm_returns_response(mock_llm_client):
-    response = mock_llm_client.messages.create(
-        model="claude-haiku-4-5-20251001",
+    response = mock_llm_client.chat.completions.create(
+        model="mistral-small-latest",
         max_tokens=100,
         messages=[{"role": "user", "content": "test"}],
     )
-    assert response.content[0].text == "Default mock response."
+    assert response.choices[0].message.content == "Default mock response."
 
 
 def test_sample_chunks_have_required_fields(sample_chunks):

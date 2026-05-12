@@ -88,15 +88,15 @@ def generate_answer(state: AgentState, llm_client) -> dict:
 
     # Pass 1: Generate initial answer
     try:
-        pass1 = llm_client.messages.create(
-            model="claude-haiku-4-5-20251001",
+        pass1 = llm_client.chat.completions.create(
+            model="mistral-small-latest",
             max_tokens=500,
             messages=[{
                 "role": "user",
                 "content": _ANSWER_PROMPT.format(context=context, question=query),
             }],
         )
-        initial_answer = pass1.content[0].text.strip()
+        initial_answer = pass1.choices[0].message.content.strip()
     except Exception as exc:
         logger.warning("Answer generation failed: %s", exc)
         return {"answer": "An error occurred while generating the answer.", "confidence": 0.0}
@@ -106,8 +106,8 @@ def generate_answer(state: AgentState, llm_client) -> dict:
     final_answer = initial_answer
     escaped = initial_answer.replace('"', '\\"').replace('\n', ' ')
     try:
-        pass2 = llm_client.messages.create(
-            model="claude-haiku-4-5-20251001",
+        pass2 = llm_client.chat.completions.create(
+            model="mistral-small-latest",
             max_tokens=300,
             messages=[{
                 "role": "user",
@@ -118,7 +118,7 @@ def generate_answer(state: AgentState, llm_client) -> dict:
                 ),
             }],
         )
-        raw = pass2.content[0].text.strip()
+        raw = pass2.choices[0].message.content.strip()
         data = json.loads(raw)
         if data.get("contradictions"):
             contradiction_found = True

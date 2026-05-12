@@ -61,13 +61,15 @@ def route_query(state: AgentState, llm_client) -> str:
     raw_response = ""
     defaulted = False
     try:
-        response = llm_client.messages.create(
-            model="claude-haiku-4-5-20251001",
+        response = llm_client.chat.completions.create(
+            model="mistral-small-latest",
             max_tokens=10,
-            system=_SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_message}],
+            messages=[
+                {"role": "system", "content": _SYSTEM_PROMPT},
+                {"role": "user", "content": user_message},
+            ],
         )
-        raw_response = response.content[0].text.strip()
+        raw_response = response.choices[0].message.content.strip()
     except Exception as exc:
         logger.warning("Router LLM call failed: %s", exc)
         raw_response = "RETRIEVE"
